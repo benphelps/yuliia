@@ -1,5 +1,7 @@
 # Yuliia
 
+![Yuliia](http://phelps.io/yuliia.png "Yuliia")
+
 Yuliia is a toy operating system.
 
 ## Plans
