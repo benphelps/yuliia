@@ -233,7 +233,7 @@ int get_offset_col(int offset) { return (offset - (get_offset_row(offset) * 2 * 
 
 void terminal_splash()
 {
-    set_terminal_color(VGA_COLOR_GREEN, VGA_COLOR_WHITE);
+    set_terminal_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
     terminal_write("\n __   __     _ _ _       \n");
     terminal_write(" \\ \\ / /   _| (_|_) __ _ \n");
     terminal_write("  \\ V / | | | | | |/ _` |\n");
