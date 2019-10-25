@@ -12,6 +12,7 @@ uint32_t kmalloc(size_t size, int align, uint32_t *phys_addr)
         end &= 0xFFFFF000;
         end += 0x1000;
     }
+
     /* Save also the physical address */
     if (phys_addr)
         *phys_addr = end;

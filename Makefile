@@ -9,13 +9,13 @@ QEMU = /usr/local/bin/qemu-system-i386
 NASM = /usr/local/bin/nasm
 GRUB = grub-mkrescue
 XORRISO = /usr/local/bin/xorriso
-CFLAGS = -g -ffreestanding -O2 -Wall -Wextra -Isrc/kernel/include
+CFLAGS = -g -ffreestanding -O2 -Wall -Wextra -Iinclude
 CLFLAGS = ${CFLAGS} -nostdlib
 SRCDIR = src
 BUILDDIR = build
 
-SOURCES := $(filter-out src/kernel/kernel.c, $(shell find src -type f -name '*.c') $(shell find src/kernel -type f -name '*.asm') $(shell find src/kernel -type f -name '*.s'))
-HEADERS := $(filter-out src/kernel/kernel.h, $(shell find src -type f -name '*.h'))
+SOURCES := $(filter-out src/kernel/kernel/kernel.c, $(shell find src -type f -name '*.c') $(shell find src/kernel -type f -name '*.asm') $(shell find src/kernel -type f -name '*.s'))
+HEADERS := $(filter-out src/kernel/kernel/kernel.h, $(shell find src -type f -name '*.h'))
 OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 OBJECTS := $(OBJECTS:$(SRCDIR)/%.asm=$(BUILDDIR)/%.o)
 OBJECTS := $(OBJECTS:$(SRCDIR)/%.s=$(BUILDDIR)/%.o)
@@ -30,7 +30,7 @@ ${BUILDDIR}/bootdisk/yuliia.bin: ${BUILDDIR}/bootloader/crti.o ${BUILDDIR}/bootl
 	${GRUB} --xorriso=${XORRISO} -o ${BUILDDIR}/yuliia.iso ${BUILDDIR}/iso
 
 # kernel object
-${BUILDDIR}/kernel/kernel.o: ${SRCDIR}/kernel/kernel.c
+${BUILDDIR}/kernel/kernel.o: ${SRCDIR}/kernel/kernel/kernel.c
 	mkdir -p $(@D)
 	${GCC} ${CFLAGS} -c $< -o $@ -lgcc
 

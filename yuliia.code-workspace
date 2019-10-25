@@ -5,26 +5,18 @@
         }
     ],
     "settings": {
-        "editor.rulers": [120],
         "files.associations": {
-            "screen.h": "c",
-            "idt.h": "c",
-            "timer.h": "c",
-            "ports.h": "c",
-            "stdint.h": "c",
-            "keyboard.h": "c",
-            "isr.h": "c",
-            "kernel.h": "c",
-            "function.h": "c",
-            "system_error": "c",
-            "string.h": "c",
-            "memory.h": "c",
-            "tty.h": "c",
-            "stdio.h": "c",
-            "descriptor_tables.h": "c",
             "random": "c",
-            "stddef.h": "c"
+            "array": "cpp",
+            "iterator": "cpp",
+            "string": "cpp",
+            "string_view": "cpp",
+            "vector": "cpp",
+            "types.h": "c",
+            "stdint.h": "c",
+            "string.h": "c",
+            "descriptor_tables.h": "c"
         },
-        "C_Cpp.default.includePath": ["${workspaceFolder}/src/kernel/include"]
+        "C_Cpp.default.includePath": ["${workspaceFolder}/include"]
     }
 }
