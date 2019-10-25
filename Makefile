@@ -10,6 +10,7 @@ NASM = /usr/local/bin/nasm
 GRUB = grub-mkrescue
 XORRISO = /usr/local/bin/xorriso
 CFLAGS = -g -ffreestanding -O2 -Wall -Wextra -Iinclude
+CPPFLAGS = -g -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Iinclude
 CLFLAGS = ${CFLAGS} -nostdlib
 SRCDIR = src
 BUILDDIR = build
@@ -43,6 +44,11 @@ ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.asm
 ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.c
 	mkdir -p $(@D)
 	${GCC} -c $< -o $@ ${CFLAGS}
+
+# kernel objects
+${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.cpp
+	mkdir -p $(@D)
+	${GCC} -c $< -o $@ ${CPPFLAGS}
 
 # bootloader asm objects
 ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.s
