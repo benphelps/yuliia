@@ -1,24 +1,25 @@
 #include <memory.h>
 
-extern uint32_t end;
+extern uint32_t _kernel_end;
+uint32_t kernel_end = &_kernel_end;
 
 /* Implementation is just a pointer to some free memory which
  * keeps growing */
 uint32_t kmalloc(size_t size, int align, uint32_t *phys_addr)
 {
     /* Pages are aligned to 4K, or 0x1000 */
-    if (align == 1 && (end & 0xFFFFF000))
+    if (align == 1 && (kernel_end & 0xFFFFF000))
     {
-        end &= 0xFFFFF000;
-        end += 0x1000;
+        kernel_end &= 0xFFFFF000;
+        kernel_end += 0x1000;
     }
 
     /* Save also the physical address */
     if (phys_addr)
-        *phys_addr = end;
+        *phys_addr = kernel_end;
 
-    uint32_t ret = end;
-    end += size; /* Remember to increment the pointer */
+    uint32_t ret = kernel_end;
+    kernel_end += size; /* Remember to increment the pointer */
     return ret;
 }
 
