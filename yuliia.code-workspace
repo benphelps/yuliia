@@ -15,8 +15,13 @@
             "types.h": "c",
             "stdint.h": "c",
             "string.h": "c",
-            "descriptor_tables.h": "c"
+            "descriptor_tables.h": "c",
+            "multiboot.h": "c",
+            "timer.h": "c",
+            "keyboard.h": "c"
         },
-        "C_Cpp.default.includePath": ["${workspaceFolder}/include"]
+        "C_Cpp.default.includePath": [
+            "${workspaceFolder}/include"
+        ]
     }
 }

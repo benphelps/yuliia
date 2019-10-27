@@ -60,6 +60,11 @@ ${BUILDDIR}/bootloader/%.o: ${SRCDIR}/bootloader/%.s
 	mkdir -p $(@D)
 	$(AS) $< -o $@
 
+${BUILDDIR}/bootloader/%.o: ${SRCDIR}/bootloader/%.asm
+	mkdir -p $(@D)
+	$(NASM) -f elf32 -O0 $< -o $@
+
+
 ${BUILDDIR}/bootloader/crti.s.o ${BUILDDIR}/bootloader/crtn.s.o:
 	${GCC} -MD -c $F -o $@ ${CFLAGS}
 
