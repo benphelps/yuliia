@@ -1,7 +1,7 @@
 #include <memory.h>
 
 extern uint32_t _kernel_end;
-uint32_t kernel_end = &_kernel_end;
+uint32_t kernel_end = (uint32_t)&_kernel_end;
 
 /* Implementation is just a pointer to some free memory which
  * keeps growing */

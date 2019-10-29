@@ -2,6 +2,7 @@
 #define ISR_H
 
 #include <arch/types.h>
+#include <common.h>
 
 /* ISRs reserved for CPU exceptions */
 extern void isr0();

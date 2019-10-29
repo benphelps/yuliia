@@ -1,7 +1,7 @@
-#include <common.h>
 #include <arch/isr.h>
-#include <arch/timer.h>
 #include <arch/multiboot.h>
+#include <arch/timer.h>
+#include <common.h>
 #include <drivers/keyboard.h>
 
 void terminal_demo();
@@ -23,26 +23,23 @@ void kernel_main(struct multiboot *mboot_ptr, u32int initial_stack)
     reset_terminal_color();
 
     terminal_write("Kernel Start: ");
-    terminal_write_hex(&_kernel_start);
+    terminal_write_hex((uint32_t)&_kernel_start);
     terminal_write("\n");
     terminal_write("Kernel End: ");
-    terminal_write_hex(&_kernel_end);
+    terminal_write_hex((uint32_t)&_kernel_end);
     terminal_write("\n");
     terminal_write("\n");
 
-
-
-
-        for (size_t i = 0; i < 5; i++)
-        {
-            uint32_t phys_addr;
-            uint32_t page = kmalloc(4000, 1, &phys_addr);
-            terminal_write("Page: ");
-            terminal_write_hex(page);
-            terminal_write(", physical address: ");
-            terminal_write_hex(phys_addr);
-            terminal_write("\n");
-        }
+    for (size_t i = 0; i < 6; i++)
+    {
+        uint32_t phys_addr;
+        uint32_t page = kmalloc(4000, 1, &phys_addr);
+        terminal_write("Page: ");
+        terminal_write_hex(page);
+        terminal_write(", physical address: ");
+        terminal_write_hex(phys_addr);
+        terminal_write("\n");
+    }
 
     set_terminal_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
     terminal_write("\n> ");
@@ -50,6 +47,10 @@ void kernel_main(struct multiboot *mboot_ptr, u32int initial_stack)
 
     UNUSED(mboot_ptr);
     UNUSED(initial_stack);
+    for (;;)
+    {
+        // nothin
+    }
 }
 
 int user_input(char *input, uint8_t scancode)
