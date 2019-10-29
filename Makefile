@@ -5,12 +5,13 @@ CC = ${TARGET}-gcc
 LD = ${TARGET}-ld
 AS = ${TARGET}-as
 GDB = ${TARGET}-gdb
+OBJCPY = ${TARGET}-objcopy
 QEMU = /usr/local/bin/qemu-system-i386
 NASM = /usr/local/bin/nasm
 GRUB = grub-mkrescue
 XORRISO = /usr/local/bin/xorriso
-CFLAGS = -g -ffreestanding -O2 -Wall -Wextra -Iinclude
-CPPFLAGS = -g -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Iinclude
+CFLAGS = -g -ffreestanding -Wall -Wextra -Iinclude
+CPPFLAGS = -g -ffreestanding -Wall -Wextra -fno-exceptions -fno-rtti -Iinclude
 CLFLAGS = ${CFLAGS} -nostdlib
 SRCDIR = src
 BUILDDIR = build
@@ -21,6 +22,8 @@ OBJECTS := $(SOURCES:$(SRCDIR)/%.c=$(BUILDDIR)/%.o)
 OBJECTS := $(OBJECTS:$(SRCDIR)/%.asm=$(BUILDDIR)/%.o)
 OBJECTS := $(OBJECTS:$(SRCDIR)/%.s=$(BUILDDIR)/%.o)
 
+default: all
+
 # full bootdisk, bootloader + kernel
 ${BUILDDIR}/bootdisk/yuliia.bin: ${BUILDDIR}/bootloader/crti.o ${BUILDDIR}/bootloader/crtbegin.o ${BUILDDIR}/bootloader/boot.o ${BUILDDIR}/kernel/kernel.o ${OBJECTS} ${BUILDDIR}/bootloader/crtend.o  ${BUILDDIR}/bootloader/crtn.o
 	mkdir -p $(@D)
@@ -29,6 +32,7 @@ ${BUILDDIR}/bootdisk/yuliia.bin: ${BUILDDIR}/bootloader/crti.o ${BUILDDIR}/bootl
 	cp ${SRCDIR}/bootloader/grub.cfg ${BUILDDIR}/iso/boot/grub/grub.cfg
 	cp $@ ${BUILDDIR}/iso/boot/yuliia.bin
 	${GRUB} --xorriso=${XORRISO} -o ${BUILDDIR}/yuliia.iso ${BUILDDIR}/iso
+	${OBJCPY} --only-keep-debug ${BUILDDIR}/bootdisk/yuliia.bin ${BUILDDIR}/bootdisk/yuliia.sym
 
 # kernel object
 ${BUILDDIR}/kernel/kernel.o: ${SRCDIR}/kernel/kernel/kernel.c
@@ -38,7 +42,7 @@ ${BUILDDIR}/kernel/kernel.o: ${SRCDIR}/kernel/kernel/kernel.c
 # kernel asm
 ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.asm
 	mkdir -p $(@D)
-	${NASM} $< -f elf -o $@
+	${NASM} $< -f elf32 -o $@
 
 # kernel objects
 ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.c
@@ -53,7 +57,7 @@ ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.cpp
 # bootloader asm objects
 ${BUILDDIR}/kernel/%.o: ${SRCDIR}/kernel/%.s
 	mkdir -p $(@D)
-	$(NASM) $< -f elf -o $@
+	$(NASM) $< -f elf32 -o $@
 
 # bootloader objects
 ${BUILDDIR}/bootloader/%.o: ${SRCDIR}/bootloader/%.s
@@ -74,9 +78,8 @@ run: ${BUILDDIR}/bootdisk/yuliia.bin
 	${QEMU} -cdrom ${BUILDDIR}/yuliia.iso
 
 debug: all
-	${QEMU} -s -cdrom ${BUILDDIR}/yuliia.iso -d guest_errors,int &
-	${GDB} -ex "target remote localhost:1234"
+	${QEMU} -s -S -cdrom ${BUILDDIR}/yuliia.iso
+    #  & ${GDB} -ex "file ${BUILDDIR}/kernel/kernel.sym" -ex "set arch i386\:x86-64" -ex "target remote localhost:1234"
 
 clean:
 	rm -rf ${BUILDDIR}
-

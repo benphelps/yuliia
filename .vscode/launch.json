@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "type": "gdb",
+            "request": "attach",
+            "name": "Debug QEMU",
+            "gdbpath": "/Users/phelps/opt/cross/bin/i686-elf-gdb",
+            "autorun": ["set arch i386", "file ./build/bootdisk/yuliia.bin"],
+            "preLaunchTask": "QEMU",
+            "executable": "./build/bootdisk/yuliia.bin",
+            "target": "localhost:1234",
+            "remote": true,
+            "cwd": "${workspaceRoot}",
+            "valuesFormatting": "parseText"
+        }
+    ]
+}
