@@ -75,7 +75,7 @@ ${BUILDDIR}/bootloader/crtbegin.o ${BUILDDIR}/bootloader/crtend.o:
 all: ${BUILDDIR}/bootdisk/yuliia.bin
 
 run: ${BUILDDIR}/bootdisk/yuliia.bin
-	${QEMU} -cdrom ${BUILDDIR}/yuliia.iso
+	${QEMU} -cdrom ${BUILDDIR}/yuliia.iso -m 512M
 
 debug: all
 	${QEMU} -s -S -cdrom ${BUILDDIR}/yuliia.iso

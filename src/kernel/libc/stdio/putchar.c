@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include <kernel/tty.h>
+#include <stdio.h>
 
-int putchar(int ic)
+void putchar(int ic)
 {
     char c = (char)ic;
-    terminal_write(&c);
-    return ic;
+    terminal_put(c);
 }

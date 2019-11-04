@@ -1,5 +1,5 @@
-#include <kernel/tty.h>
 #include <arch/types.h>
+#include <kernel/tty.h>
 
 extern void panic(char *message, char *file, u32int line)
 {

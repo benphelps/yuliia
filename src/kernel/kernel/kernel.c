@@ -5,40 +5,32 @@
 #include <drivers/keyboard.h>
 
 void terminal_demo();
-extern uint32_t _kernel_end;
-extern uint32_t _kernel_start;
+extern uint32_t kernel_virtual_end;
+extern uint32_t kernel_virtual_start;
 
 void kernel_main(struct multiboot *mboot_ptr, u32int initial_stack)
 {
     terminal_initialize();
+    reset_terminal_color();
     terminal_splash();
 
     init_descriptor_tables();
     asm volatile("sti");
-
     init_timer(50);
     init_keyboard_driver();
 
     // terminal_demo();
-    reset_terminal_color();
 
-    terminal_write("Kernel Start: ");
-    terminal_write_hex((uint32_t)&_kernel_start);
-    terminal_write("\n");
-    terminal_write("Kernel End: ");
-    terminal_write_hex((uint32_t)&_kernel_end);
-    terminal_write("\n");
-    terminal_write("\n");
+    printf("initial_stack: 0x%x\n", (uint32_t)&initial_stack);
+    printf("kernel_virtual_start: 0x%x\n", (uint32_t)&kernel_virtual_start);
+    printf("kernel_virtual_end: 0x%x\n", (uint32_t)&kernel_virtual_end);
+    printf("kernel_virtual_size: 0x%x\n", (uint32_t)&kernel_virtual_end - (uint32_t)&kernel_virtual_start);
 
     for (size_t i = 0; i < 6; i++)
     {
         uint32_t phys_addr;
-        uint32_t page = kmalloc(4000, 1, &phys_addr);
-        terminal_write("Page: ");
-        terminal_write_hex(page);
-        terminal_write(", physical address: ");
-        terminal_write_hex(phys_addr);
-        terminal_write("\n");
+        uint32_t page = kmalloc(sizeof(char[1024 * 12]), 1, &phys_addr);
+        printf("page: 0x%x, physical address: 0x%x\n", page, phys_addr);
     }
 
     set_terminal_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);

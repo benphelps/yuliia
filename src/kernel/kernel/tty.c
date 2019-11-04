@@ -1,6 +1,6 @@
-#include <kernel/tty.h>
-#include <common.h>
 #include <arch/ports.h>
+#include <common.h>
+#include <kernel/tty.h>
 
 /* Declaration of private functions */
 int get_offset(int col, int row);
@@ -106,6 +106,10 @@ int terminal_putchar(char c, int col, int row, char attr)
     {
         row = get_offset_row(offset);
         offset = get_offset(0, row + 1);
+    }
+    else if (c == '\t')
+    {
+        offset += 8;
     }
     else if (c == 0x08)
     { /* Backspace */
