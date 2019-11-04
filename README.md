@@ -1,6 +1,6 @@
 # Yuliia
 
-![Yuliia](http://phelps.io/yuliia.png?v=2 "Yuliia")
+![Yuliia](https://i.imgur.com/y4UMkPk.png "Yuliia")
 
 Yuliia is a toy operating system.
 
